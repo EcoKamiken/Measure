@@ -39,7 +39,7 @@ def get_voltage():
     return:
         Voltage[V]
     """
-    volt = subprocess.getoutput("i2cget -y {bus} {addr} {volt} w".format(bus=I2C_BUS, addr=I2C_ADDR, volt=I2C_VOLT))
+    volt = subprocess.getoutput("/usr/sbin/i2cget -y {bus} {addr} {volt} w".format(bus=I2C_BUS, addr=I2C_ADDR, volt=I2C_VOLT))
     return (int(volt[4:6], 16) * 256 + int(volt[2:4], 16)) * 1.25 / 1000
 
 def get_ampere(vin):
