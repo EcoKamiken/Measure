@@ -1,0 +1,8 @@
+*.swp
+*.gz
+*.csv
+*.txt
+config.ini
+thermometer/*
+wattage/*
+!.gitkeep
