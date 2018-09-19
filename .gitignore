@@ -3,6 +3,9 @@
 *.csv
 *.txt
 config.ini
+
+/DHT11_Python
+
 thermometer/*
 wattage/*
 !.gitkeep

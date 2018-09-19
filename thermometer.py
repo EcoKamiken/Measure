@@ -14,7 +14,7 @@ def get_data(instance):
         if result.is_valid():
             temperature = result.temperature
             humidity = result.humidity
-    return temperature, humidity
+            return temperature, humidity
 
 def dump_log(t, h):
     config = ConfigParser()
@@ -22,6 +22,7 @@ def dump_log(t, h):
     config.read(script_dir + '/' + 'config.ini', 'UTF-8')
 
     d = datetime.datetime.now()
+    d = d.strftime("%Y-%m-%d %H:%M:%S")
     p = config.get('web', 'place')
 
     if os.path.exists(os.path.dirname(__file__)):
