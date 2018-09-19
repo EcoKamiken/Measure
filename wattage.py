@@ -30,6 +30,8 @@ import math
 import subprocess
 import time
 
+from configparser import ConfigParser
+
 I2C_BUS = 1
 I2C_ADDR = 0x49
 I2C_VOLT = 0x02
@@ -63,13 +65,19 @@ def get_wattage(amp):
     return math.sqrt(3) * 210 * amp * 0.9 / 1000
 
 def dump_log(v,a,w):
+    config = ConfigParser()
+    script_dir = os.path.dirname(__file__)
+    config.read(script_dir + '/' + 'config.ini', 'UTF-8')
+
     d = datetime.datetime.now()
+    p = config.get('web', 'place')
+
     if os.path.exists(os.path.dirname(__file__)):
         with open(os.path.dirname(__file__) + '/' + 'wattage.csv', 'a') as log:
-            log.write("{},{},{},{}\n".format(d, v, a, w))
+            log.write("{},{},{},{},{}\n".format(p, d, v, a, w))
     else:
         with open(os.path.dirname(__file__) + '/' + 'wattage.csv', 'w') as log:
-            log.write("{},{},{},{}\n".format(d, v, a, w))
+            log.write("{},{},{},{},{}\n".format(p, d, v, a, w))
 
 if __name__ == '__main__':
     v = get_voltage()
