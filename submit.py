@@ -31,8 +31,13 @@ def upload_log():
 
         filenames = ['thermometer', 'wattage']
         for fname in filenames:
-            sftp_connection.put(script_dir + '/' + fname + '.csv', data_dir + '/' + fname + '/' + place + '/' + '{}{}.csv'.format(fname, d.strftime("%Y%m%d_%H%M%S")))
-            shutil.move(script_dir + '/' + fname + '.csv', script_dir + '/' + 'logs/{0}/{0}{1}.csv'.format(fname, d.strftime("%Y%m%d_%H%M%S")))
+            csv_filename = fname + d.strftime("%Y%m%d_%H") + '.csv'
+            original = script_dir + '/' + fname + '.csv'
+            destination = data_dir + '/' + fname
+            backup_dir = script_dir + '/' + 'logs' + '/' + fname
+
+            sftp_connection.put(original, destination + '/' + place + '/' + csv_filename)
+            shutil.move(original, backup_dir + '/' + csv_filename)
     except:
         raise
     finally:
