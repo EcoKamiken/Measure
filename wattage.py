@@ -33,7 +33,7 @@ import time
 from configparser import ConfigParser
 
 I2C_BUS = 1
-I2C_ADDR = 0x49
+I2C_ADDR = 0x4a
 I2C_VOLT = 0x02
 
 def get_voltage():
@@ -81,8 +81,7 @@ def dump_log(v,a,w):
             log.write("{},{},{},{},{}\n".format(p, d, v, a, w))
 
 if __name__ == '__main__':
-    #v = round(get_voltage(), 2)
-    v = round(10.000111, 2)
+    v = round(get_voltage(), 2)
     a = round(get_ampere(v), 2)
     w = round(get_wattage(a), 2)
     dump_log(v,a,w)
