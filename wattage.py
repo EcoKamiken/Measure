@@ -70,6 +70,7 @@ def dump_log(v,a,w):
     config.read(script_dir + '/' + 'config.ini', 'UTF-8')
 
     d = datetime.datetime.now()
+    d = d.strftime("%Y-%m-%d %H:%M:%S")
     p = config.get('web', 'place')
 
     if os.path.exists(os.path.dirname(__file__)):
@@ -80,7 +81,8 @@ def dump_log(v,a,w):
             log.write("{},{},{},{},{}\n".format(p, d, v, a, w))
 
 if __name__ == '__main__':
-    v = get_voltage()
-    a = get_ampere(v)
-    w = get_wattage(a)
+    #v = round(get_voltage(), 2)
+    v = round(10.000111, 2)
+    a = round(get_ampere(v), 2)
+    w = round(get_wattage(a), 2)
     dump_log(v,a,w)
