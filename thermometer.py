@@ -22,7 +22,7 @@ def dump_log(t, h):
     config.read(script_dir + '/' + 'config.ini', 'UTF-8')
 
     d = datetime.datetime.now()
-    d = d.strftime("%Y-%m-%d %H:%M:%S")
+    d = d.strftime("%Y-%m-%d %H:%M")
     p = config.get('web', 'place')
 
     if os.path.exists(os.path.dirname(__file__)):

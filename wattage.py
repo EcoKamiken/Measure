@@ -33,6 +33,7 @@ import time
 from configparser import ConfigParser
 
 I2C_BUS = 1
+# i2cdetectで要確認
 I2C_ADDR = 0x4a
 I2C_VOLT = 0x02
 
@@ -70,7 +71,7 @@ def dump_log(v,a,w):
     config.read(script_dir + '/' + 'config.ini', 'UTF-8')
 
     d = datetime.datetime.now()
-    d = d.strftime("%Y-%m-%d %H:%M:%S")
+    d = d.strftime("%Y-%m-%d %H:%M")
     p = config.get('web', 'place')
 
     if os.path.exists(os.path.dirname(__file__)):
