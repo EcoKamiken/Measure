@@ -73,13 +73,14 @@ def dump_log(v,a,w):
     d = datetime.datetime.now()
     d = d.strftime("%Y-%m-%d %H:%M")
     p = config.get('web', 'place')
+    device_no = config.get('web', 'device_no')
 
     if os.path.exists(os.path.dirname(__file__)):
         with open(os.path.dirname(__file__) + '/' + 'wattage.csv', 'a') as log:
-            log.write("{},{},{},{},{}\n".format(p, d, v, a, w))
+            log.write("{},{},{},{},{},{}\n".format(p, d, v, a, w, device_no))
     else:
         with open(os.path.dirname(__file__) + '/' + 'wattage.csv', 'w') as log:
-            log.write("{},{},{},{},{}\n".format(p, d, v, a, w))
+            log.write("{},{},{},{},{},{}\n".format(p, d, v, a, w, device_no))
 
 if __name__ == '__main__':
     v = round(get_voltage(), 2)
