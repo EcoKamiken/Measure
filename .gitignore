@@ -1,13 +1,13 @@
+/DHT11_Python
+config.ini
+
 *.swp
 *.gz
 *.csv
 *.txt
-config.ini
 
-/DHT11_Python
 
-thermometer/*
-wattage/*
+logs/*
 !.gitkeep
 
 __pycache__/

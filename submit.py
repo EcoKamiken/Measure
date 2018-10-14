@@ -9,40 +9,38 @@ import datetime
 
 from configparser import ConfigParser
 
-def upload_log():
-    d = datetime.datetime.now()
-    config = ConfigParser()
-    script_dir = os.path.dirname(__file__)
+now = datetime.datetime.now().strftime("%Y%m%d_%H")
+here = os.path.dirname(__file__)
 
-    config.read(script_dir + '/' + 'config.ini', 'UTF-8')
-    host = config.get('ssh', 'host')
-    port = config.getint('ssh', 'port')
-    user = config.get('ssh', 'user')
-    passwd = config.get('ssh', 'passwd')
+config = ConfigParser()
+config.read(here + '/' + 'config.ini', 'UTF-8')
+host = config.get('ssh', 'host')
+port = config.getint('ssh', 'port')
+user = config.get('ssh', 'user')
+passwd = config.get('ssh', 'passwd')
 
-    place = config.get('web', 'place')
-    data_dir = config.get('web', 'data_dir')
+site_id = config.getint('info', 'id')
+device_id = config.getint('info', 'device_id')
+post_to = config.get('info', 'post_to')
 
-    try:
-        client = paramiko.SSHClient()
-        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        client.connect(host, port=port, username=user, password=passwd)
-        sftp_connection = client.open_sftp()
+try:
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect(host, port=port, username=user, password=passwd)
+    sftp_connection = client.open_sftp()
 
-        filenames = ['thermometer', 'wattage']
-        for fname in filenames:
-            csv_filename = fname + d.strftime("%Y%m%d_%H") + '.csv'
-            original = script_dir + '/' + fname + '.csv'
-            destination = data_dir + '/' + fname
-            backup_dir = script_dir + '/' + 'logs' + '/' + fname
+    filename = 'log.csv'
+    filename_bk = 'log_' + now + '.csv'
 
-            sftp_connection.put(original, destination + '/' + place + '/' + csv_filename)
-            shutil.move(original, backup_dir + '/' + csv_filename)
-    except:
-        raise
-    finally:
-        if client:
-            client.close()
+    logfile = here + '/' + filename
+    logfile_bk = here + '/logs/' + filename_bk
+    shutil.move(logfile, logfile_bk)
 
-if __name__ == '__main__':
-    upload_log()
+    sftp_connection.put(logfile_bk, post_to + '/' + str(site_id) + '/' +
+            str(device_id) +
+            '/' + filename_bk)
+except:
+    raise
+finally:
+    if client:
+        client.close()
