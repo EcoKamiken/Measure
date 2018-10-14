@@ -9,12 +9,13 @@ import DHT11_Python.dht11 as dht11
 from configparser import ConfigParser
 
 def get_data(instance):
-    while True:
+    for i in range(100):
         result = instance.read()
         if result.is_valid():
             temperature = result.temperature
             humidity = result.humidity
             return temperature, humidity
+        return 0, 0
 
 def dump_log(t, h):
     config = ConfigParser()

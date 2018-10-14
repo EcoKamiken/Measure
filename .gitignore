@@ -9,3 +9,5 @@ config.ini
 thermometer/*
 wattage/*
 !.gitkeep
+
+__pycache__/
