@@ -1,4 +1,4 @@
-# k
+# Measure
 
 ## 使い方
 
@@ -7,14 +7,10 @@
 ## 以下のコマンドを実行して設定を行う
 
 ```
-$ adduser kamiken
-$ passwd kamiken
-$ su kamiken
-$ cd
-$ git clone https://github.com/ecokamiken/k
-$ cd k
+$ git clone https://github.com/EcoKamiken/Measure
+$ cd Measure
 $ sudo ./setup.sh
-$ sudo crontab -u root crontab_settings
+$ sudo crontab -u root cron.conf
 ```
 
 ## 動かない場合
