@@ -11,4 +11,4 @@ def get_data(instance):
             temperature = result.temperature
             humidity = result.humidity
             return temperature, humidity
-        return 0, 0
+    return 0, 0
