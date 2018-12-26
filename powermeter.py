@@ -43,3 +43,6 @@ def get_ampere(vin):
 
 def get_wattage(amp):
     return math.sqrt(3) * 210 * amp * 0.9 / 1000
+
+if __name__ == '__main__':
+    print(get_voltage())
