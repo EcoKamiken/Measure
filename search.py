@@ -10,5 +10,12 @@ def get_devicelist():
             l.append('0x' + device)
     return l
 
+def get_i2c_address():
+    devices = subprocess.getoutput("/usr/sbin/i2cdetect -y 1").split(" ")
+    for device in devices:
+        if len(device) == 2 and device != '--':
+            return int(device, 16)
+
 if __name__ == '__main__':
     print(get_devicelist())
+    print(get_i2c_address())
