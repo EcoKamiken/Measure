@@ -6,7 +6,7 @@ import DHT11_Python.dht11 as dht11
 
 
 def get_data(instance):
-    for i in range(100):
+    for i in range(1000):
         result = instance.read()
         if result.is_valid():
             with open('thermometer_retry.log', 'a') as f:
