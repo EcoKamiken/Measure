@@ -24,18 +24,16 @@ ampere = round(pm.get_ampere(voltage), 2)
 wattage = round(pm.get_wattage(ampere), 2)
 
 # write to csv
+current_dir = os.path.dirname(__file__)
 config = ConfigParser()
-script_dir = os.path.dirname(__file__)
-config.read(script_dir + '/' + 'config.ini', 'UTF-8')
+config.read(current_dir + '/' + 'config.ini', 'UTF-8')
 
-created_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 site_id = config.getint('info', 'id')
 device_id = config.getint('info', 'device_id')
+created_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
-logfile = os.path.dirname(__file__) + '/' + 'log.csv'
-if os.path.dirname(__file__):
-    with open(logfile, 'a') as log:
-        log.write("{},{},{},{},{},{}\n".format(site_id, device_id, temperature, humidity, wattage, created_at))
-else:
-    with open(logfile, 'w') as log:
-        log.write("{},{},{},{},{},{}\n".format(site_id, device_id, temperature, humidity, wattage, created_at))
+logfile = current_dir + '/' + 'log.csv'
+with open(logfile, 'a') as log:
+    log.write("{},{},{},{},{},{}\n"
+              .format(site_id, device_id,
+                      temperature, humidity, wattage, created_at))
