@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
+エントリーポイント
+thermometer.py, powermeter.pyを呼び出して、
+各種センサから取得した値をCSVに記録する。
+"""
 
 import os
 import RPi.GPIO as GPIO
@@ -10,20 +15,21 @@ from configparser import ConfigParser
 import thermometer as tm
 import powermeter as pm
 
+# GPIO初期化
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.cleanup()
 
-# thermometer
+# thermometer.pyから値取得
 instance = dht11.DHT11(pin=14)
 temperature, humidity = tm.get_data(instance)
 
-# powermeter
+# powermeter.pyから値取得
 voltage = round(pm.get_voltage(), 2)
 ampere = round(pm.get_ampere(voltage), 2)
 wattage = round(pm.get_wattage(ampere), 2)
 
-# write to csv
+# Configファイルの読み込み・変数初期化
 current_dir = os.path.dirname(__file__)
 config = ConfigParser()
 config.read(current_dir + '/' + 'config.ini', 'UTF-8')
@@ -32,6 +38,7 @@ site_id = config.getint('info', 'id')
 device_id = config.getint('info', 'device_id')
 created_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
+# CSVに記録
 logfile = current_dir + '/' + 'log.csv'
 with open(logfile, 'a') as log:
     log.write("{},{},{},{},{},{}\n"

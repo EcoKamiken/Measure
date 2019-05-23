@@ -1,12 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
+温湿度センサ DHT11からデータの読み出しを行う
+"""
 
 import RPi.GPIO as GPIO
 import DHT11_Python.dht11 as dht11
 
 
+MAX_RETRY = 1000
+
+
 def get_data(instance):
-    for i in range(1000):
+    """温度、湿度を取得して返す
+
+    Args:
+        instance (object): DHT11_Python.dht11()で生成されたオブジェクト
+
+    Returns:
+        temperature, humidity (int, int): 温度、湿度
+    """
+    for i in range(MAX_RETRY):
         result = instance.read()
         if result.is_valid():
             with open('thermometer_retry.log', 'a') as f:
@@ -24,5 +38,4 @@ if __name__ == '__main__':
 
     # thermometer
     instance = dht11.DHT11(pin=14)
-    while True:
-        print(get_data(instance))
+    print(get_data(instance))
