@@ -37,9 +37,9 @@ try:
     shutil.move(logfile, logfile_bk)
 
     sftp_connection.put(logfile_bk, post_to + '/' + str(site_id) + '/' +
-            str(device_id) +
-            '/' + filename_bk)
-except:
+                        str(device_id) +
+                        '/' + filename_bk)
+except Exception:
     raise
 finally:
     if client:
