@@ -1,46 +1,53 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import datetime
 import os
 import paramiko
+import scp
 import shutil
 import time
-import datetime
 
 from configparser import ConfigParser
 
-now = datetime.datetime.now().strftime("%Y%m%d_%H")
-here = os.path.dirname(__file__)
+current_time = datetime.datetime.now().strftime("%Y%m%d_%H")
+current_dir = os.path.dirname(__file__)
 
+# コンフィグファイルを読み込み
 config = ConfigParser()
-config.read(here + '/' + 'config.ini', 'UTF-8')
+config.read(current_dir + '/' + 'config.ini', 'UTF-8')
+
+# ファイル転送プロトコル(SFTP or SCP)
+transfer_protocol = config.get('protocol', 'transfer_protocol')
+
+# SSH接続情報
 host = config.get('ssh', 'host')
 port = config.getint('ssh', 'port')
 user = config.get('ssh', 'user')
 passwd = config.get('ssh', 'passwd')
 
+# 発電所情報
 site_id = config.getint('info', 'id')
 device_id = config.getint('info', 'device_id')
 post_to = config.get('info', 'post_to')
 
-try:
-    client = paramiko.SSHClient()
-    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(host, port=port, username=user, password=passwd)
-    sftp_connection = client.open_sftp()
+with paramiko.SSHClient() as ssh:
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(host, port=port, username=user, password=passwd)
 
     filename = 'log.csv'
-    filename_bk = 'log_' + now + '.csv'
+    backup = filename + '_' + current_time + '.csv'
 
-    logfile = here + '/' + filename
-    logfile_bk = here + '/logs/' + filename_bk
-    shutil.move(logfile, logfile_bk)
+    original_file_path = current_dir + '/' + filename
+    backup_file_path = current_dir + '/logs/' + backup
+    shutil.move(original_file_path, backup_file_path)
 
-    sftp_connection.put(logfile_bk, post_to + '/' + str(site_id) + '/' +
-                        str(device_id) +
-                        '/' + filename_bk)
-except Exception:
-    raise
-finally:
-    if client:
-        client.close()
+    if transfer_protocol == 'SFTP':
+        with ssh.open_sftp() as sftp:
+            sftp.put(backup_file_path, post_to + '/' + str(site_id) + '/' +
+                     str(device_id) + '/' + backup)
+    elif transfer_protocol == 'SCP':
+        with scp.SCPClient(ssh.get_transport()) as scp:
+            scp.put(backup_file_path, post_to + '/' + str(site_id) + '/' +
+                    str(device_id) + '/' + backup)
+

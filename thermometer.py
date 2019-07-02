@@ -8,7 +8,8 @@ import RPi.GPIO as GPIO
 import DHT11_Python.dht11 as dht11
 
 
-MAX_RETRY = 1000
+# 温度取得のリトライ回数
+MAX_RETRY = 300
 
 
 def get_data(instance):

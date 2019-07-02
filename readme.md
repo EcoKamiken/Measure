@@ -10,16 +10,5 @@
 $ git clone https://github.com/ecokamiken/measure
 $ cd measure
 $ sudo ./setup.sh
-$ sudo crontab -u root cron.conf
+$ sudo crontab cron.conf
 ```
-
-## 動かない場合
-
-```
-# アドレスを確認
-$ sudo i2cdetect -y 1
-$ vim wattage.py
-I2C_ADDRの値を変更
-```
-
-- cronのPATHがハードコーディングされているので修正する
