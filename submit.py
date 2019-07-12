@@ -46,10 +46,14 @@ if __name__ == '__main__':
 
         if transfer_protocol == 'SFTP':
             with ssh.open_sftp() as sftp:
+                print(backup_file_path, post_to + '/' + str(site_id) + '/' +
+                         str(device_id) + '/' + backup)
                 sftp.put(backup_file_path, post_to + '/' + str(site_id) + '/' +
                          str(device_id) + '/' + backup)
         elif transfer_protocol == 'SCP':
             with scp.SCPClient(ssh.get_transport()) as scp:
+                print(backup_file_path, post_to + '/' + str(site_id) + '/' +
+                        str(device_id) + '/' + backup)
                 scp.put(backup_file_path, post_to + '/' + str(site_id) + '/' +
                         str(device_id) + '/' + backup)
 
