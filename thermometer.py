@@ -9,7 +9,7 @@ import DHT11_Python.dht11 as dht11
 
 
 # 温度取得のリトライ回数
-MAX_RETRY = 300
+MAX_RETRY = 10
 
 
 def get_data(instance):
