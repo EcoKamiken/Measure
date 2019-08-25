@@ -27,6 +27,7 @@ Ex. Bus Voltage Registerの読み方
 
 import math
 import subprocess
+import sys
 
 from search import get_i2c_address
 
@@ -82,6 +83,9 @@ def get_wattage(ampere, phase, line):
         return math.sqrt(3) * phase_voltage * ampere * power_factor / 1000
     elif phase == 1 and line == 3:
         return phase_voltage * ampere * power_factor / 1000
+    else:
+        print('ParameterError: please check config.ini', file=sys.stderr)
+        return -1
 
 
 if __name__ == '__main__':

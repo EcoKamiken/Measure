@@ -1,10 +1,13 @@
 # Measure
 
-## 使い方
+## Setup
 
-## raspi-configでi2cを有効にする
+```
+$ sudo raspi-config
+Advanced Options -> I2C -> Yes -> Reboot
+```
 
-## 以下のコマンドを実行して設定を行う
+## Getting started
 
 ```
 $ git clone https://github.com/ecokamiken/measure
