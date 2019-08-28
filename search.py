@@ -22,7 +22,7 @@ def get_devicelist():
 def get_i2c_address():
     """
     接続されているi2cデバイスを取得して返す
-    ** warning: 一番番号が若いデバイスのアドレスのみを返す **
+        Note: 一番番号が若いデバイスのアドレスのみを返す
 
     Returns:
         (int): i2cアドレス
