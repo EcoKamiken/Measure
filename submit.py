@@ -7,15 +7,24 @@ import paramiko
 import scp
 import shutil
 import time
+import subprocess
+import sys
 
 from configparser import ConfigParser
 
+measure_root = os.environ['MEASURE_ROOT']
+cmd = ['rsync', '-av', '--chmod=F644,D755', '/dev/shm/', measure_root]
+try:
+    subprocess.check_call(cmd)
+except:
+    print('Error: rsync failed.', file=sys.stderr)
+    sys.exit(1)
+
 current_time = datetime.datetime.now().strftime("%Y%m%d_%H")
-current_dir = os.path.dirname(__file__)
 
 # コンフィグファイルを読み込み
 config = ConfigParser()
-config.read(current_dir + '/' + 'config.ini', 'UTF-8')
+config.read(measure_root + '/' + 'config.ini', 'UTF-8')
 
 # ファイル転送プロトコル(SFTP or SCP)
 transfer_protocol = config.get('protocol', 'transfer_protocol')
@@ -40,8 +49,8 @@ if __name__ == '__main__':
         filename = 'log.csv'
         backup = filename.split('.')[0] + '_' + current_time + '.csv'
 
-        original_file_path = current_dir + '/' + filename
-        backup_file_path = current_dir + '/logs/' + backup
+        original_file_path = measure_root + '/' + filename
+        backup_file_path = measure_root + '/logs/' + backup
         shutil.move(original_file_path, backup_file_path)
 
         if transfer_protocol == 'SFTP':
