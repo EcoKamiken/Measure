@@ -13,14 +13,15 @@ import sys
 from configparser import ConfigParser
 
 measure_root = os.environ['MEASURE_ROOT']
+current_time = datetime.datetime.now().strftime("%Y%m%d_%H")
+
+# Sync /dev/shm/log.csv $MEASURE_ROOT/log.csv
 cmd = ['rsync', '-av', '--chmod=F644,D755', '/dev/shm/', measure_root]
 try:
     subprocess.check_call(cmd)
 except:
     print('Error: rsync failed.', file=sys.stderr)
     sys.exit(1)
-
-current_time = datetime.datetime.now().strftime("%Y%m%d_%H")
 
 # コンフィグファイルを読み込み
 config = ConfigParser()
