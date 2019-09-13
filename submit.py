@@ -45,7 +45,6 @@ if __name__ == '__main__':
     with paramiko.SSHClient() as ssh:
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(host, port=port, username=user, password=passwd)
-        ssh.exec_command('mkdir -p ' + post_to + '/' + str(site_id) + '/' + str(device_id))
 
         filename = 'log.csv'
         backup = filename.split('.')[0] + '_' + current_time + '.csv'
@@ -57,13 +56,16 @@ if __name__ == '__main__':
         if transfer_protocol == 'SFTP':
             with ssh.open_sftp() as sftp:
                 print(backup_file_path, post_to + '/' + str(site_id) + '/' +
-                         str(device_id) + '/' + backup)
-                sftp.put(backup_file_path, post_to + '/' + str(site_id) + '/' +
-                         str(device_id) + '/' + backup)
+                      str(device_id) + '/' + backup)
+                res = sftp.put(backup_file_path, post_to + '/' + str(site_id) +
+                               '/' + str(device_id) + '/' + backup)
+                print(res)
         elif transfer_protocol == 'SCP':
             with scp.SCPClient(ssh.get_transport()) as scp:
                 print(backup_file_path, post_to + '/' + str(site_id) + '/' +
-                        str(device_id) + '/' + backup)
+                      str(device_id) + '/' + backup)
                 scp.put(backup_file_path, post_to + '/' + str(site_id) + '/' +
                         str(device_id) + '/' + backup)
+
+        os.remove('/dev/shm/log.csv')
 
