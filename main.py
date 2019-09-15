@@ -25,6 +25,9 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.cleanup()
 
+# $MEASURE_ROOT
+measure_root = os.environ['MEASURE_ROOT']
+
 # Get temperature and humidity using 'thermometer.py'
 instance = dht11.DHT11(pin=14)
 temperature, humidity = tm.get_data(instance)
@@ -42,6 +45,6 @@ site_id = config.getint('info', 'id')
 device_id = config.getint('info', 'device_id')
 created_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
-with open('/dev/shm/log.csv', 'a') as log:
+with open(measure_root + '/log.csv', 'a') as log:
     log.write("{},{},{},{},{},{}\n".format(site_id, device_id, temperature,
                                            humidity, wattage, created_at))
