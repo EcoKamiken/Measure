@@ -19,6 +19,7 @@ current_time = datetime.datetime.now().strftime("%Y%m%d_%H")
 cmd = ['rsync', '-av', '--chmod=F644,D755', '/dev/shm/', measure_root]
 try:
     subprocess.check_call(cmd)
+    os.remove('/dev/shm/log.csv')
 except:
     print('Error: rsync failed.', file=sys.stderr)
     sys.exit(1)
@@ -67,5 +68,4 @@ if __name__ == '__main__':
                 scp.put(backup_file_path, post_to + '/' + str(site_id) + '/' +
                         str(device_id) + '/' + backup)
 
-        os.remove('/dev/shm/log.csv')
 
