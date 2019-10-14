@@ -8,11 +8,7 @@ import RPi.GPIO as GPIO
 import DHT11_Python.dht11 as dht11
 
 
-# 温度取得のリトライ回数
-MAX_RETRY = 10
-
-
-def get_data(instance):
+def get_data(instance, retry=0):
     """温度、湿度を取得して返す
 
     Args:
@@ -21,7 +17,7 @@ def get_data(instance):
     Returns:
         temperature, humidity (int, int): 温度、湿度
     """
-    for i in range(MAX_RETRY):
+    for i in range(retry):
         result = instance.read()
         if result.is_valid():
             with open('thermometer_retry.log', 'a') as f:
