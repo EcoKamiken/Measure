@@ -1,0 +1,4 @@
+[I 191016 13:00:52 submit:77] Backup: log.csv /home/measure/measure/log.csv -> /home/measure/measure/logs/log_20191016_13.csv
+[I 191016 13:00:52 submit:83] Protocol: SCP
+[I 191016 13:00:52 submit:95] Submit: remote server
+[I 191016 13:00:52 submit:96] /home/measure/measure/logs/log_20191016_13.csv -> /home/kamisato/usr/taiyoukou/hanamigawa_yane/log_20191016_13.csv

@@ -17,7 +17,7 @@ measure_root = os.environ['MEASURE_ROOT']
 current_time = datetime.datetime.now().strftime("%Y%m%d_%H")
 
 # logzero
-logfile('syslog/submit.log', maxBytes=65536, backupCount=3, loglevel=10)
+logfile("%s/syslog/submit.log" % measure_root, maxBytes=65536, backupCount=3, loglevel=10)
 
 # コンフィグファイルを読み込み
 config = ConfigParser()
