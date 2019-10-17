@@ -46,24 +46,28 @@ def print_debug(exc):
     logger.debug('EXCEPTION: ' + str(exc))
 
 
-def check_ssh(host, port, user, passwd, interval=3, retries=3):
+def check_ssh(host, port, user, passwd, interval=3, retries=5):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    for x in range(retries):
+    for x in range(retries+1):
         try:
+            if x > 0:
+                logger.info('Retry count: ' + str(x))
+                logger.info('Wait ' + str(interval * x) + ' seconds.')
+                time.sleep(interval * x)
+            logger.info('Connect ssh')
             ssh.connect(str(host), port=port, username=user, password=passwd)
             return ssh
         except OSError as e:
+            logger.error('SSH connect error')
             print_debug(e)
-            logger.info('retry: ' + str(x+1))
-            time.sleep(interval)
     return False
 
 
 if __name__ == '__main__':
     ssh = check_ssh(host=str(host), port=port, user=user, passwd=passwd)
     if ssh is False:
-        logger.error("exit")
+        logger.error("SSH: Connection invalid")
         sys.exit()
 
     filename = 'log.csv'
@@ -82,21 +86,26 @@ if __name__ == '__main__':
     
     logger.info('Protocol: ' + transfer_protocol)
     if transfer_protocol == 'SFTP':
-        # TODO: Error handling
-        with ssh.open_sftp() as sftp:
-            dist = post_to + '/' + str(site_id) + '/' + str(device_id) + '/' + backup
-            logger.info('Submit: remote server ' + backup_file_path, dist)
-            sftp.put(backup_file_path, dist)
+        try:
+            with ssh.open_sftp() as s:
+                dist = post_to + '/' + str(site_id) + '/' + str(device_id) + '/' + backup
+                logger.info('Submit: remote server ' + backup_file_path + ' -> ' + dist)
+                s.put(backup_file_path, dist)
+        except AttributeError as e:
+            print_debug(e)
+            logger.error('submit failed.')
+            logger.info(backup_file_path + ' -> ' + original_file_path)
+            shutil.move(backup_file_path, original_file_path)
 
     elif transfer_protocol == 'SCP':
         try:
             with scp.SCPClient(ssh.get_transport()) as s:
                 dist = post_to + '/' + site_name + '/' + backup
-                logger.info('Submit: remote server')
-                logger.info(backup_file_path + ' -> ' + dist)
+                logger.info('Submit: remote server' + backup_file_path + ' -> ' + dist)
                 s.put(backup_file_path, dist)
         except scp.SCPException as e:
             print_debug(e)
             logger.error('submit failed.')
             logger.info(backup_file_path + ' -> ' + original_file_path)
             shutil.move(backup_file_path, original_file_path)
+
