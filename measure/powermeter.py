@@ -29,14 +29,14 @@ import math
 import subprocess
 import sys
 
-from search import get_i2c_address
+from measure.search import get_i2c_address
 
 I2C_BUS = 1
 I2C_ADDR = get_i2c_address()
 I2C_BUS_VOLT = 0x02
 
 
-def get_voltage():
+def get_voltage() -> float:
     """バス電圧値を取得して返す
 
     Returns:
@@ -51,7 +51,7 @@ def get_voltage():
         return (int(volt[4:6], 16) * 256 + int(volt[2:4], 16)) * 1.25 / 1000
 
 
-def get_ampere(v):
+def get_ampere(v) -> float:
     """バス電圧から計算した電流値を返す
 
     Returns:
@@ -60,7 +60,7 @@ def get_ampere(v):
     return v / 5 * 250
 
 
-def get_wattage(ampere, phase, line):
+def get_wattage(ampere, phase, line) -> float:
     """電流から計算した発電量を返す
 
     三相三線式と単相三線式に対応
