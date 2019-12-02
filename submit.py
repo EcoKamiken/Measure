@@ -96,6 +96,11 @@ if __name__ == '__main__':
             logger.error('submit failed.')
             logger.info(backup_file_path + ' -> ' + original_file_path)
             shutil.move(backup_file_path, original_file_path)
+        except FileNotFoundError as e:
+            logger.error('remote directory not found.')
+            logger.error('please check ' + dist)
+            logger.info(backup_file_path + ' -> ' + original_file_path)
+            shutil.move(backup_file_path, original_file_path)
 
     elif transfer_protocol == 'SCP':
         try:

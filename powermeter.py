@@ -91,7 +91,7 @@ def get_wattage(ampere, phase, line):
 if __name__ == '__main__':
     v = get_voltage()
     i = get_ampere(v)
-    w = get_wattage(i, 0, 3)
+    w = get_wattage(i, 3, 3)
     print('I2C_ADDR => ', I2C_ADDR, '[{}]'.format(hex(I2C_ADDR)))
     print('v => ',  v, type(v))
     print('i => ',  i, type(i))
