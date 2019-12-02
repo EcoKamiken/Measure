@@ -20,6 +20,13 @@ $ echo "export MEASURE_ROOT=\"$HOME/measure\" >> ~/.bashrc
 $ ./setup.sh
 ```
 
+## Environments
+
+```
+$MEASURE_ROOT="/path/to/measure"
+$SMTP_PASS="Password"
+```
+
 ## Cron
 
 ```
