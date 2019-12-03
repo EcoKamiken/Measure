@@ -10,8 +10,6 @@ from email.mime.text import MIMEText
 from smtplib import SMTP_SSL
 from configparser import ConfigParser
 
-import aggregate
-
 # $MEASURE_ROOT
 measure_root = os.environ['MEASURE_ROOT']
 
@@ -23,6 +21,7 @@ config.read(current_dir + '/' + 'config.ini', 'UTF-8')
 class Email():
     def __init__(self):
         self.smtp_host = config.get('email', 'host')
+        self.smtp_port = config.get('email', 'port')
         self.smtp_user = config.get('email', 'user')
         self.smtp_pass = os.environ.get('SMTP_PASS')
 
@@ -36,8 +35,11 @@ class Email():
 
     def send(self):
         dt = datetime.datetime.now()
+        with SMTP_SSL(self.smtp_host, self.smtp_port) as smtps:
+            smtps.login(self.smtp_user, self.smtp_pass)
+            smtps.send_message(self.msg)
         if dt.strftime('%H') == '20':
-            with SMTP_SSL(self.smtp_host, 465) as smtps:
+            with SMTP_SSL(self.smtp_host, self.smtp_port) as smtps:
                 smtps.login(self.smtp_user, self.smtp_pass)
                 smtps.send_message(self.msg)
 

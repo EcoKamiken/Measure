@@ -10,7 +10,7 @@ measure_root = os.environ['MEASURE_ROOT']
 dt = datetime.datetime.now()
 daily_filename = dt.strftime("daily_%Y%m%d.csv")
 hourly_filename = dt.strftime("hourly_%Y%m%d_%H.csv")
-dt = dt.strftime("%Y-%m-%d %H:00")
+dt = dt.strftime("%H:00")
 
 def aggregate():
     count = 0
@@ -21,7 +21,7 @@ def aggregate():
             total += float(row[4])
             count += 1
     with open(measure_root + '/logs/{}'.format(daily_filename), 'a') as fp:
-        fp.write(dt + ', ' + str(total/count) + '\n')
+        fp.write(dt + ', ' + str(round(total/count, 2)) + '\n')
 
 if __name__ == "__main__":
     aggregate()
