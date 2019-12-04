@@ -21,7 +21,7 @@ def aggregate():
             total += float(row[4])
             count += 1
     with open(measure_root + '/logs/{}'.format(daily_filename), 'a') as fp:
-        fp.write(dt + ', ' + str(round(total/count, 2)) + '\n')
+        fp.write(dt + ': ' + str(round(total/count, 2)) + ' [kWh]\n')
 
 if __name__ == "__main__":
     aggregate()

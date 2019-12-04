@@ -9,11 +9,9 @@ import datetime
 
 from configparser import ConfigParser
 
-import DHT11_Python.dht11 as dht11
 import RPi.GPIO as GPIO
 
 import powermeter as pm
-import thermometer as tm
 
 # Read 'config.ini'
 current_dir = os.path.dirname(__file__)
@@ -28,9 +26,9 @@ GPIO.cleanup()
 # $MEASURE_ROOT
 measure_root = os.environ['MEASURE_ROOT']
 
-# Get temperature and humidity using 'thermometer.py'
-instance = dht11.DHT11(pin=14)
-temperature, humidity = tm.get_data(instance)
+# Temperature(dummy)
+temperature = 0
+humidity = 0
 
 # Get values using 'powermeter.py'
 phase = config.getint('pcs', 'phase')
