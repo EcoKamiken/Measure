@@ -13,18 +13,19 @@ import RPi.GPIO as GPIO
 
 import powermeter as pm
 
+# $MEASURE_ROOT
+measure_root = os.environ['MEASURE_ROOT']
+
 # Read 'config.ini'
 current_dir = os.path.dirname(__file__)
 config = ConfigParser()
-config.read(current_dir + '/' + 'config.ini', 'UTF-8')
+config.read(measure_root  + '/config.ini', 'UTF-8')
 
 # Init GPIO
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.cleanup()
 
-# $MEASURE_ROOT
-measure_root = os.environ['MEASURE_ROOT']
 
 # Temperature(dummy)
 temperature = 0
