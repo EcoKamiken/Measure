@@ -1,5 +1,5 @@
 # Require
-cryptography==2.4.2
+cryptography==3.2
 paramiko==2.4.2
 RPi.GPIO==0.6.5
 scp==0.13.2
